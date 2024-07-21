@@ -8,16 +8,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
  const userRoutes = require('./routes/users');
-// const terrainRoutes = require('./routes/terrainRoute');
-// const storeRoutes = require('./routes/storeRoute');
+ const projectRoutes = require('./routes/projects'); 
+ const educationRoutes = require('./routes/education');
 // const cafeteriaRoutes = require('./routes/cafeteriaRoute');
 // const eventsRoutes = require('./routes/eventRoute');
 // const bookingsRoutes = require('./routes/bookingRoute');
 // const mailRoutes = require('./routes/mailRoute');
  
  app.use('/users', userRoutes);
-// app.use('/terrains', terrainRoutes);
-// app.use('/store', storeRoutes);
+ app.use('/projects', projectRoutes); 
+ app.use('/education', educationRoutes);
 // app.use('/cafeteria', cafeteriaRoutes);
 // app.use('/events', eventsRoutes);
 // app.use('/bookings', bookingsRoutes);
