@@ -1,11 +1,18 @@
-const mongoose = require("mongoose");
+const express = require("express");
+const router = express.Router();
+const {
+    createSkill,
+    getAllSkills,
+    getSkillById,
+    updateSkill,
+    deleteSkill
+} = require("../controllers/skills");
 
-const skillSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    description: { type: String }
-    // Add more fields as per your schema requirements
-});
+// Routes for skills
+router.post("/create", createSkill);
+router.get("/getAll", getAllSkills);
+router.get("/getById/:skillId", getSkillById);
+router.put("/update/:skillId", updateSkill);
+router.delete("/delete/:skillId", deleteSkill);
 
-const Skill = mongoose.model("Skill", skillSchema);
-
-module.exports = Skill;
+module.exports = router;
