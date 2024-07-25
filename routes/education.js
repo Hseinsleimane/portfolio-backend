@@ -8,10 +8,11 @@ const {
     deleteEducation
 } = require("../controllers/education");
 
-router.get("/getAll", getAllEducations);
-router.get("/getById/:id", getEducationById);
-router.post("/create", createEducation);
-router.put("/update/:id", updateEducation);
-router.delete("/delete/:id", deleteEducation);
+// Routes
+router.post("/", createEducation);
+router.get("/", getAllEducations);
+router.get("/:id", getEducationById);
+router.put("/:id", updateEducation);
+router.delete("/:id", deleteEducation);
 
 module.exports = router;

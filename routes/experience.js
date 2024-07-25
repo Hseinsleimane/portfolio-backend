@@ -8,11 +8,11 @@ const {
     deleteExperience
 } = require("../controllers/experiences");
 
-// Routes for experiences
-router.post("/create", createExperience);
-router.get("/getAll", getAllExperiences);
-router.get("/getById/:experienceId", getExperienceById);
-router.put("/update/:experienceId", updateExperience);
-router.delete("/delete/:experienceId", deleteExperience);
+// Routes
+router.post("/", createExperience);
+router.get("/", getAllExperiences);
+router.get("/:experienceId", getExperienceById);
+router.put("/:experienceId", updateExperience);
+router.delete("/:experienceId", deleteExperience);
 
 module.exports = router;

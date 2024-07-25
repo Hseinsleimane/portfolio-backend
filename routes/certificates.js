@@ -8,14 +8,11 @@ const {
   deleteCertificate,
 } = require("../controllers/certificates");
 
-// Import middleware if needed
-// const { authenticated } = require("../middlewares/auth");
-
 // Routes
-router.post("/create", createCertificate);
-router.get("/getAll", getAllCertificates);
-router.get("/getById/:certificateId", getCertificateById);
-router.put("/update/:certificateId", updateCertificate);
-router.delete("/delete/:certificateId", deleteCertificate);
+router.post("/", createCertificate);
+router.get("/", getAllCertificates);
+router.get("/:certificateId", getCertificateById);
+router.put("/:certificateId", updateCertificate);
+router.delete("/:certificateId", deleteCertificate);
 
 module.exports = router;

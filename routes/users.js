@@ -8,15 +8,13 @@ const {
   deleteUser,
   updateUser,
 } = require("../controllers/users");
-//const { authenticated } = require("../middlewares/auth");
 
-router.get("/getAll", getAll);
-router.get("/getById/:Id", findOne);
-router.post("/login", login);
+// Routes
 router.post("/register", register);
-router.delete("/delete/:Id", deleteUser);
-router.put("/update/:Id", updateUser);
-
-
+router.post("/login", login);
+router.get("/", getAll);
+router.get("/:Id", findOne);
+router.put("/:Id", updateUser);
+router.delete("/:Id", deleteUser);
 
 module.exports = router;
