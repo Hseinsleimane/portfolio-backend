@@ -1,72 +1,95 @@
-const Projects = require("../models/projects");
+const Project = require("../models/project");
+const Joi = require('joi');
+const cache = require('memory-cache');
+const projectSchema = Joi.object({
+    name: Joi.string().required(),
+    description: Joi.string().required(),
+    startDate: Joi.date().required(),
+    endDate: Joi.date().optional(),
+    url: Joi.string().optional()
+});
 
 const createProject = async (req, res) => {
-    const { title, description, startDate, endDate, technologies, link } = req.body;
-    try {
-        if (!title || !description || !startDate || !technologies)
-            throw Error("All required fields must be filled!");
+    const { error } = projectSchema.validate(req.body);
+    if (error) return res.status(400).json({ message: "Validation error", error: error.details[0].message });
 
-        const project = await Projects.create({
-            title,
+    const { name, description, startDate, endDate, url } = req.body;
+    try {
+        const project = await Project.create({
+            name,
             description,
             startDate,
             endDate,
-            technologies,
-            link
+            url
         });
-        await project.save();
-        
-        res.status(200).json({ message: "Project added successfully", project });
+        res.status(201).json({ message: "Project added successfully", project });
     } catch (error) {
-        res.status(500).json({ message: "Failed to add a project", error: error.message });
+        res.status(500).json({ message: "Failed to add project", error: error.message });
+    }
+};
+
+const getAllProjects = async (req, res) => {
+    let projects = cache.get('projects');
+    try {
+        const projects = await Project.find({});
+        cache.put('projects', projects, 60000); // Cache for 1 minute
+        res.json(projects);
+        res.status(200).json({ message: "Projects retrieved successfully", projects });
+    } catch (error) {
+        res.status(500).json({ message: "Failed to retrieve projects", error: error.message });
     }
 };
 
 const getProjectById = async (req, res) => {
-    const { id } = req.params;
+    const { projectId } = req.params;
     try {
-        if (!id) throw Error("No id detected to continue");
-        const project = await Projects.findById(id);
-        if (!project) throw Error("Project not found");
+        const project = await Project.findById(projectId);
+        if (!project) {
+            return res.status(404).json({ message: "Project not found" });
+        }
         res.status(200).json({ message: "Project retrieved successfully", project });
     } catch (error) {
-        res.status(500).json({ message: "Failed to get the project", error: error.message });
+        res.status(500).json({ message: "Failed to retrieve project", error: error.message });
     }
-}
-
-const getAllProjects = async (req, res) => {
-    try {
-        const projects = await Projects.find({});
-        res.status(200).json({ message: "Projects retrieved successfully", projects });
-    } catch (error) {
-        res.status(500).json({ message: 'An error occurred during selecting all projects', error: error.message })
-    }
-}
+};
 
 const updateProject = async (req, res) => {
-    const { title, description, startDate, endDate, technologies, link } = req.body;
-    const { id } = req.params;
+    const { error } = projectSchema.validate(req.body);
+    if (error) return res.status(400).json({ message: "Validation error", error: error.details[0].message });
+
+    const { projectId } = req.params;
     try {
-        if (!id) throw Error("No id sent as parameter");
-        const project = await Projects.findByIdAndUpdate(id, { title, description, startDate, endDate, technologies, link }, { new: true });
-        if (!project) throw Error("Error while updating");
-        res.status(200).json({ message: "Updating a project successfully", project });
+        const updatedProject = await Project.findByIdAndUpdate(
+            projectId,
+            req.body,
+            { new: true }
+        );
+        if (!updatedProject) {
+            return res.status(404).json({ message: "Project not found" });
+        }
+        res.status(200).json({ message: "Project updated successfully", project: updatedProject });
     } catch (error) {
-        res.status(500).json({ message: "Failed to update a project", error: error.message })
+        res.status(500).json({ message: "Failed to update project", error: error.message });
     }
-}
+};
 
 const deleteProject = async (req, res) => {
-    const { id } = req.params;
+    const { projectId } = req.params;
     try {
-        if (!id) throw Error("No id passed as parameter");
-        const project = await Projects.findByIdAndDelete(id);
-        if (!project) throw Error("An error occurred");
-        const projects = await Projects.find({});
-        res.status(200).json({ message: "Project deleted successfully", projects });
+        const deletedProject = await Project.findByIdAndDelete(projectId);
+        if (!deletedProject) {
+            return res.status(404).json({ message: "Project not found" });
+        }
+        res.status(200).json({ message: "Project deleted successfully", project: deletedProject });
     } catch (error) {
-        res.status(500).json({ message: "An error occurred during deleting a project", error: error.message })
+        res.status(500).json({ message: "Failed to delete project", error: error.message });
     }
-}
+};
 
-module.exports = { createProject, getProjectById, getAllProjects, updateProject, deleteProject };
+module.exports = {
+    createProject,
+    getAllProjects,
+    getProjectById,
+    updateProject,
+    deleteProject
+};

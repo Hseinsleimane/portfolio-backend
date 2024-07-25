@@ -1,11 +1,22 @@
 const Education = require("../models/education");
+const Joi = require('joi');
+
+const educationSchema = Joi.object({
+    institution: Joi.string().required(),
+    degree: Joi.string().required(),
+    fieldOfStudy: Joi.string().required(),
+    startDate: Joi.date().required(),
+    endDate: Joi.date().optional(),
+    grade: Joi.string().optional(),
+    description: Joi.string().optional()
+});
 
 const createEducation = async (req, res) => {
+    const { error } = educationSchema.validate(req.body);
+    if (error) return res.status(400).json({ message: "Validation error", error: error.details[0].message });
+
     const { institution, degree, fieldOfStudy, startDate, endDate, grade, description } = req.body;
     try {
-        if (!institution || !degree || !fieldOfStudy || !startDate || !endDate)
-            throw Error("All required fields must be filled!");
-
         const education = await Education.create({
             institution,
             degree,
@@ -15,9 +26,7 @@ const createEducation = async (req, res) => {
             grade,
             description
         });
-        await education.save();
-        
-        res.status(200).json({ message: "Education added successfully", education });
+        res.status(201).json({ message: "Education added successfully", education });
     } catch (error) {
         res.status(500).json({ message: "Failed to add education", error: error.message });
     }
@@ -26,12 +35,13 @@ const createEducation = async (req, res) => {
 const getEducationById = async (req, res) => {
     const { id } = req.params;
     try {
-        if (!id) throw Error("No id detected to continue");
         const education = await Education.findById(id);
-        if (!education) throw Error("Education not found");
+        if (!education) {
+            return res.status(404).json({ message: "Education not found" });
+        }
         res.status(200).json({ message: "Education retrieved successfully", education });
     } catch (error) {
-        res.status(500).json({ message: "Failed to get education", error: error.message });
+        res.status(500).json({ message: "Failed to retrieve education", error: error.message });
     }
 }
 
@@ -40,34 +50,43 @@ const getAllEducations = async (req, res) => {
         const educations = await Education.find({});
         res.status(200).json({ message: "Educations retrieved successfully", educations });
     } catch (error) {
-        res.status(500).json({ message: 'An error occurred during selecting all educations', error: error.message })
+        res.status(500).json({ message: 'Failed to retrieve educations', error: error.message });
     }
 }
 
 const updateEducation = async (req, res) => {
-    const { institution, degree, fieldOfStudy, startDate, endDate, grade, description } = req.body;
+    const { error } = educationSchema.validate(req.body);
+    if (error) return res.status(400).json({ message: "Validation error", error: error.details[0].message });
+
     const { id } = req.params;
     try {
-        if (!id) throw Error("No id sent as parameter");
-        const education = await Education.findByIdAndUpdate(id, { institution, degree, fieldOfStudy, startDate, endDate, grade, description }, { new: true });
-        if (!education) throw Error("Error while updating");
-        res.status(200).json({ message: "Updating education successfully", education });
+        const education = await Education.findByIdAndUpdate(id, req.body, { new: true });
+        if (!education) {
+            return res.status(404).json({ message: "Education not found" });
+        }
+        res.status(200).json({ message: "Education updated successfully", education });
     } catch (error) {
-        res.status(500).json({ message: "Failed to update education", error: error.message })
+        res.status(500).json({ message: "Failed to update education", error: error.message });
     }
 }
 
 const deleteEducation = async (req, res) => {
     const { id } = req.params;
     try {
-        if (!id) throw Error("No id passed as parameter");
         const education = await Education.findByIdAndDelete(id);
-        if (!education) throw Error("An error occurred");
-        const educations = await Education.find({});
-        res.status(200).json({ message: "Education deleted successfully", educations });
+        if (!education) {
+            return res.status(404).json({ message: "Education not found" });
+        }
+        res.status(200).json({ message: "Education deleted successfully", education });
     } catch (error) {
-        res.status(500).json({ message: "An error occurred during deleting education", error: error.message })
+        res.status(500).json({ message: "Failed to delete education", error: error.message });
     }
 }
 
-module.exports = { createEducation, getEducationById, getAllEducations, updateEducation, deleteEducation };
+module.exports = {
+    createEducation,
+    getEducationById,
+    getAllEducations,
+    updateEducation,
+    deleteEducation
+};
