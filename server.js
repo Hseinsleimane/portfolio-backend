@@ -26,3 +26,7 @@ app.listen(process.env.PORT,()=>{
     connection.checkConnection();
     console.log(`server is running on port:${process.env.PORT}`)
 })
+
+app.get('/', (req, res) => {
+    res.send('hi yara!');
+  });
