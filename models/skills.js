@@ -1,18 +1,12 @@
-const express = require("express");
-const router = express.Router();
-const {
-    createSkill,
-    getAllSkills,
-    getSkillById,
-    updateSkill,
-    deleteSkill
-} = require("../controllers/skills");
+const mongoose = require("mongoose");
 
-// Routes for skills
-router.post("/create", createSkill);
-router.get("/getAll", getAllSkills);
-router.get("/getById/:skillId", getSkillById);
-router.put("/update/:skillId", updateSkill);
-router.delete("/delete/:skillId", deleteSkill);
+const skillSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    description: { type: String, required: true },
+    proficiency: { type: String, enum: ['Beginner', 'Intermediate', 'Advanced', 'Expert'], required: true },
+    category: { type: String, enum: ['Technical', 'Soft', 'Language', 'Other'], required: true },
+});
 
-module.exports = router;
+const Skill = mongoose.model("Skill", skillSchema);
+
+module.exports = Skill;

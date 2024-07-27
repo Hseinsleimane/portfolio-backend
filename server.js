@@ -10,18 +10,16 @@ app.use(express.urlencoded({ extended: true }));
  const userRoutes = require('./routes/users');
  const projectRoutes = require('./routes/projects'); 
  const educationRoutes = require('./routes/education');
-// const cafeteriaRoutes = require('./routes/cafeteriaRoute');
-// const eventsRoutes = require('./routes/eventRoute');
-// const bookingsRoutes = require('./routes/bookingRoute');
-// const mailRoutes = require('./routes/mailRoute');
+ const certificateRoutes = require('./routes/certificates');
+ const experienceRoutes = require('./routes/experience');
+ const skillRoutes = require('./routes/skills');
  
  app.use('/users', userRoutes);
  app.use('/projects', projectRoutes); 
  app.use('/education', educationRoutes);
-// app.use('/cafeteria', cafeteriaRoutes);
-// app.use('/events', eventsRoutes);
-// app.use('/bookings', bookingsRoutes);
-// app.use('/mail', mailRoutes);
+ app.use('/cerificates', certificateRoutes);
+ app.use('/experience', experienceRoutes);
+ app.use('/skills', skillRoutes);
 
 
 app.listen(process.env.PORT,()=>{

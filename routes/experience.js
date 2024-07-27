@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 const {
     createExperience,
@@ -6,7 +6,7 @@ const {
     getExperienceById,
     updateExperience,
     deleteExperience
-} = require("../controllers/experiences");
+} = require("../controllers/experience");
 
 // Routes for experiences
 router.post("/create", createExperience);

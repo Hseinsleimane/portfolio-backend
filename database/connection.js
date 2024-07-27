@@ -11,3 +11,4 @@ const DatabaseUrl = process.env.DatabaseUrl;
   }
 
 module.exports = {checkConnection};
+
