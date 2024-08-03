@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
  app.use('/users', userRoutes);
  app.use('/projects', projectRoutes); 
  app.use('/education', educationRoutes);
- app.use('/cerificates', certificateRoutes);
+ app.use('/certificates', certificateRoutes);
  app.use('/experience', experienceRoutes);
  app.use('/skills', skillRoutes);
 
