@@ -1,0 +1,56 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Users\ciss\portfolio\UserscissAppDataRoamingnpm\node_modules\npm\bin\npm-cli.js
+1 info using npm@10.8.2
+2 info using node@v20.15.0
+3 silly config load:file:C:\Users\ciss\portfolio\UserscissAppDataRoamingnpm\node_modules\npm\npmrc
+4 silly config load:file:C:\Users\ciss\.npmrc
+5 silly config load:file:C:\Users\ciss\portfolio\UserscissAppDataRoamingnpm\etc\npmrc
+6 verbose title npm install npm
+7 verbose argv "install" "--global" "npm"
+8 verbose logfile logs-max:10 dir:C:\Users\ciss\portfolio\UserscissAppDataLocalnpm-cache\_logs\2024-08-07T13_24_34_536Z-
+9 verbose logfile C:\Users\ciss\portfolio\UserscissAppDataLocalnpm-cache\_logs\2024-08-07T13_24_34_536Z-debug-0.log
+10 silly logfile done cleaning log files
+11 http fetch GET 200 https://registry.npmjs.org/npm 47ms (cache hit)
+12 silly packumentCache heap:2197815296 maxSize:549453824 maxEntrySize:274726912
+13 silly idealTree buildDeps
+14 silly fetch manifest npm@*
+15 silly packumentCache full:https://registry.npmjs.org/npm cache-miss
+16 http fetch GET 200 https://registry.npmjs.org/npm 63ms (cache hit)
+17 silly packumentCache full:https://registry.npmjs.org/npm set size:22031520 disposed:false
+18 silly placeDep ROOT npm@10.8.2 OK for:  want: *
+19 silly reify mark retired [
+19 silly reify   'C:\\Users\\ciss\\portfolio\\UserscissAppDataRoamingnpm\\node_modules\\npm',
+19 silly reify   'C:\\Users\\ciss\\portfolio\\UserscissAppDataRoamingnpm\\npm',
+19 silly reify   'C:\\Users\\ciss\\portfolio\\UserscissAppDataRoamingnpm\\npm.cmd',
+19 silly reify   'C:\\Users\\ciss\\portfolio\\UserscissAppDataRoamingnpm\\npm.ps1',
+19 silly reify   'C:\\Users\\ciss\\portfolio\\UserscissAppDataRoamingnpm\\npx',
+19 silly reify   'C:\\Users\\ciss\\portfolio\\UserscissAppDataRoamingnpm\\npx.cmd',
+19 silly reify   'C:\\Users\\ciss\\portfolio\\UserscissAppDataRoamingnpm\\npx.ps1'
+19 silly reify ]
+20 silly reify moves {
+20 silly reify   'C:\\Users\\ciss\\portfolio\\UserscissAppDataRoamingnpm\\node_modules\\npm': 'C:\\Users\\ciss\\portfolio\\UserscissAppDataRoamingnpm\\node_modules\\.npm-9raBGxVO',
+20 silly reify   'C:\\Users\\ciss\\portfolio\\UserscissAppDataRoamingnpm\\npm': 'C:\\Users\\ciss\\portfolio\\UserscissAppDataRoamingnpm\\.npm-E1BduVnx',
+20 silly reify   'C:\\Users\\ciss\\portfolio\\UserscissAppDataRoamingnpm\\npm.cmd': 'C:\\Users\\ciss\\portfolio\\UserscissAppDataRoamingnpm\\.npm.cmd-9AyNbSca',
+20 silly reify   'C:\\Users\\ciss\\portfolio\\UserscissAppDataRoamingnpm\\npm.ps1': 'C:\\Users\\ciss\\portfolio\\UserscissAppDataRoamingnpm\\.npm.ps1-MTpm3Mme',
+20 silly reify   'C:\\Users\\ciss\\portfolio\\UserscissAppDataRoamingnpm\\npx': 'C:\\Users\\ciss\\portfolio\\UserscissAppDataRoamingnpm\\.npx-bBASgXZe',
+20 silly reify   'C:\\Users\\ciss\\portfolio\\UserscissAppDataRoamingnpm\\npx.cmd': 'C:\\Users\\ciss\\portfolio\\UserscissAppDataRoamingnpm\\.npx.cmd-NMyyVrCz',
+20 silly reify   'C:\\Users\\ciss\\portfolio\\UserscissAppDataRoamingnpm\\npx.ps1': 'C:\\Users\\ciss\\portfolio\\UserscissAppDataRoamingnpm\\.npx.ps1-pem6facE'
+20 silly reify }
+21 silly CHANGE node_modules/npm
+22 silly CHANGE node_modules/npm/node_modules/@npmcli/installed-package-contents
+23 silly CHANGE node_modules/npm/node_modules/@npmcli/arborist
+24 silly CHANGE node_modules/npm/node_modules/which
+25 silly CHANGE node_modules/npm/node_modules/semver
+26 silly CHANGE node_modules/npm/node_modules/qrcode-terminal
+27 silly CHANGE node_modules/npm/node_modules/pacote
+28 silly CHANGE node_modules/npm/node_modules/nopt
+29 silly CHANGE node_modules/npm/node_modules/node-gyp
+30 silly CHANGE node_modules/npm/node_modules/mkdirp
+31 silly CHANGE node_modules/npm/node_modules/glob
+32 silly CHANGE node_modules/npm/node_modules/cross-spawn/node_modules/which
+33 silly CHANGE node_modules/npm/node_modules/cssesc
+34 verbose cwd C:\Users\ciss\portfolio
+35 verbose os Windows_NT 10.0.22631
+36 verbose node v20.15.0
+37 verbose npm  v10.8.2
+38 verbose exit 0
+39 info ok

@@ -1,0 +1,32 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Users\ciss\portfolio\UserscissAppDataRoamingnpm\node_modules\npm\bin\npm-cli.js
+1 info using npm@10.8.2
+2 info using node@v20.15.0
+3 silly config load:file:C:\Users\ciss\portfolio\UserscissAppDataRoamingnpm\node_modules\npm\npmrc
+4 silly config load:file:C:\Users\ciss\.npmrc
+5 silly config load:file:C:\Users\ciss\portfolio\UserscissAppDataRoamingnpm\etc\npmrc
+6 verbose title npm install npx
+7 verbose argv "install" "--global" "npx" "--force"
+8 verbose logfile logs-max:10 dir:C:\Users\ciss\portfolio\UserscissAppDataLocalnpm-cache\_logs\2024-08-07T13_25_38_328Z-
+9 verbose logfile C:\Users\ciss\portfolio\UserscissAppDataLocalnpm-cache\_logs\2024-08-07T13_25_38_328Z-debug-0.log
+10 warn using --force Recommended protections disabled.
+11 silly packumentCache heap:2197815296 maxSize:549453824 maxEntrySize:274726912
+12 silly logfile done cleaning log files
+13 silly idealTree buildDeps
+14 silly fetch manifest npx@*
+15 silly packumentCache full:https://registry.npmjs.org/npx cache-miss
+16 http fetch GET https://registry.npmjs.org/npx attempt 1 failed with ENOTFOUND
+17 http fetch GET https://registry.npmjs.org/npx attempt 2 failed with ENOTFOUND
+18 http fetch GET 200 https://registry.npmjs.org/npx 70809ms attempt #3 (cache miss)
+19 silly packumentCache full:https://registry.npmjs.org/npx set size:undefined disposed:false
+20 silly placeDep ROOT npx@10.2.2 OK for:  want: *
+21 silly reify moves {}
+22 silly tarball no local data for npx@https://registry.npmjs.org/npx/-/npx-10.2.2.tgz. Extracting by manifest.
+23 http fetch GET 200 https://registry.npmjs.org/npx/-/npx-10.2.2.tgz 9797ms (cache miss)
+24 warn deprecated npx@10.2.2: This package is now part of the npm CLI.
+25 silly ADD node_modules/npx
+26 verbose cwd C:\Users\ciss\portfolio
+27 verbose os Windows_NT 10.0.22631
+28 verbose node v20.15.0
+29 verbose npm  v10.8.2
+30 verbose exit 0
+31 info ok

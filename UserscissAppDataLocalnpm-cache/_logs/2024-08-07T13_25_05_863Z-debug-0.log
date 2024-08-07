@@ -1,0 +1,19 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Users\ciss\portfolio\UserscissAppDataRoamingnpm\node_modules\npm\bin\npm-cli.js
+1 info using npm@10.8.2
+2 info using node@v20.15.0
+3 silly config load:file:C:\Users\ciss\portfolio\UserscissAppDataRoamingnpm\node_modules\npm\npmrc
+4 silly config load:file:C:\Users\ciss\portfolio\.npmrc
+5 silly config load:file:C:\Users\ciss\.npmrc
+6 silly config load:file:C:\Users\ciss\portfolio\UserscissAppDataRoamingnpm\etc\npmrc
+7 verbose title npm cache clean
+8 verbose argv "cache" "clean" "--force"
+9 verbose logfile logs-max:10 dir:C:\Users\ciss\portfolio\UserscissAppDataLocalnpm-cache\_logs\2024-08-07T13_25_05_863Z-
+10 verbose logfile C:\Users\ciss\portfolio\UserscissAppDataLocalnpm-cache\_logs\2024-08-07T13_25_05_863Z-debug-0.log
+11 warn using --force Recommended protections disabled.
+12 silly logfile done cleaning log files
+13 verbose cwd C:\Users\ciss\portfolio
+14 verbose os Windows_NT 10.0.22631
+15 verbose node v20.15.0
+16 verbose npm  v10.8.2
+17 verbose exit 0
+18 info ok

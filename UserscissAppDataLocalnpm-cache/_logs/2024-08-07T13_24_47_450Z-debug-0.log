@@ -1,0 +1,44 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Users\ciss\portfolio\UserscissAppDataRoamingnpm\node_modules\npm\bin\npm-cli.js
+1 info using npm@10.8.2
+2 info using node@v20.15.0
+3 silly config load:file:C:\Users\ciss\portfolio\UserscissAppDataRoamingnpm\node_modules\npm\npmrc
+4 silly config load:file:C:\Users\ciss\.npmrc
+5 silly config load:file:C:\Users\ciss\portfolio\UserscissAppDataRoamingnpm\etc\npmrc
+6 verbose title npm install npx
+7 verbose argv "install" "--global" "npx"
+8 verbose logfile logs-max:10 dir:C:\Users\ciss\portfolio\UserscissAppDataLocalnpm-cache\_logs\2024-08-07T13_24_47_450Z-
+9 verbose logfile C:\Users\ciss\portfolio\UserscissAppDataLocalnpm-cache\_logs\2024-08-07T13_24_47_450Z-debug-0.log
+10 silly packumentCache heap:2197815296 maxSize:549453824 maxEntrySize:274726912
+11 silly logfile done cleaning log files
+12 silly idealTree buildDeps
+13 silly fetch manifest npx@*
+14 silly packumentCache full:https://registry.npmjs.org/npx cache-miss
+15 http fetch GET 200 https://registry.npmjs.org/npx 31ms (cache hit)
+16 silly packumentCache full:https://registry.npmjs.org/npx set size:136966 disposed:false
+17 silly placeDep ROOT npx@10.2.2 OK for:  want: *
+18 silly reify moves {}
+19 verbose stack Error: EEXIST: file already exists
+19 verbose stack     at failEEXIST (C:\Users\ciss\portfolio\UserscissAppDataRoamingnpm\node_modules\npm\node_modules\bin-links\lib\check-bin.js:47:32)
+19 verbose stack     at C:\Users\ciss\portfolio\UserscissAppDataRoamingnpm\node_modules\npm\node_modules\bin-links\lib\check-bin.js:69:14
+19 verbose stack     at async Promise.all (index 0)
+19 verbose stack     at async checkShim (C:\Users\ciss\portfolio\UserscissAppDataRoamingnpm\node_modules\npm\node_modules\bin-links\lib\check-bin.js:58:3)
+19 verbose stack     at async Promise.all (index 0)
+19 verbose stack     at async Function.checkBins (C:\Users\ciss\portfolio\UserscissAppDataRoamingnpm\node_modules\npm\node_modules\bin-links\lib\check-bins.js:15:3)
+19 verbose stack     at async [checkBins] (C:\Users\ciss\portfolio\UserscissAppDataRoamingnpm\node_modules\npm\node_modules\@npmcli\arborist\lib\arborist\rebuild.js:223:5)
+19 verbose stack     at async C:\Users\ciss\portfolio\UserscissAppDataRoamingnpm\node_modules\npm\node_modules\@npmcli\arborist\lib\arborist\reify.js:714:7
+20 error code EEXIST
+21 error path C:\Users\ciss\portfolio\UserscissAppDataRoamingnpm\npx
+22 error EEXIST: file already exists
+23 error File exists: C:\Users\ciss\portfolio\UserscissAppDataRoamingnpm\npx
+24 error Remove the existing file and try again, or run npm
+25 error with --force to overwrite files recklessly.
+26 silly unfinished npm timer reify 1723037088310
+27 silly unfinished npm timer reify:loadBundles 1723037088400
+28 silly unfinished npm timer reifyNode:node_modules/npx 1723037088401
+29 verbose cwd C:\Users\ciss\portfolio
+30 verbose os Windows_NT 10.0.22631
+31 verbose node v20.15.0
+32 verbose npm  v10.8.2
+33 verbose exit 1
+34 verbose code 1
+35 error A complete log of this run can be found in: C:\Users\ciss\portfolio\UserscissAppDataLocalnpm-cache\_logs\2024-08-07T13_24_47_450Z-debug-0.log
