@@ -1,23 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { FaBriefcase, FaCalendarAlt } from 'react-icons/fa';
-import { experienceApi } from '../services/api';
 
-const Experience = () => {
-  const [experienceData, setExperienceData] = useState([]);
-
-  useEffect(() => {
-    fetchExperiences();
-  }, []);
-
-  const fetchExperiences = async () => {
-    try {
-      const response = await experienceApi.getAll();
-      setExperienceData(response.data);
-    } catch (error) {
-      console.error('Error fetching experiences:', error);
-    }
-  };
-
+const Experience = ({ experienceData = [] }) => {
+  if (experienceData.length === 0) {
+    return null;
+  }
 
   return (
     <section className="bg-primary text-white px-5 py-32" id="experience">

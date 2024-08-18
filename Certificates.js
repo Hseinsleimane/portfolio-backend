@@ -1,23 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { certificatesApi } from '../services/api';
 
-const Certificates = () => {
-  const [certificatesData, setCertificatesData] = useState([]);
-
-  useEffect(() => {
-    fetchCertificates();
-  }, []);
-
-  const fetchCertificates = async () => {
-    try {
-      const response = await certificatesApi.getAll();
-      setCertificatesData(response.data);
-    } catch (error) {
-      console.error('Error fetching certificates:', error);
-    }
-  };
-
+const Certificates = ({ certificatesData }) => {
   return (
     <section className="bg-gray-900 text-white py-20" id="certificates">
       <div className="container mx-auto">

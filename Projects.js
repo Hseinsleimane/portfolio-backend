@@ -1,23 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { projectsApi } from '../services/api';
 
-const Projects = () => {
-  const [projectsData, setProjectsData] = useState([]);
-
-  useEffect(() => {
-    fetchProjects();
-  }, []);
-
-  const fetchProjects = async () => {
-    try {
-      const response = await projectsApi.getAll();
-      setProjectsData(response.data);
-    } catch (error) {
-      console.error('Error fetching projects:', error);
-    }
-  };
-
+const Projects = ({ projectsData }) => {
   return (
     <div className="p-6 bg-gray-900 min-h-screen" id="projects">
       <motion.h2

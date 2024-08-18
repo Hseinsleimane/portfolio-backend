@@ -18,9 +18,7 @@ const Contact = ({ contactData }) => {
           <span className="font-bold">Phone:</span> {contactData.phone}
         </p>
       </div>
-      
     </section>
-
   );
 };
 

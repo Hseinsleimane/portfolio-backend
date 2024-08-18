@@ -1,24 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { FaUniversity } from 'react-icons/fa';
-import { educationApi } from '../services/api';
 
-const Education = () => {
-  const [educationData, setEducationData] = useState([]);
+const Education = ({ educationData = [] }) => {
+  if (educationData.length === 0) {
+    return null;
+  }
 
-  useEffect(() => {
-    fetchEducation();
-  }, []);
-
-  const fetchEducation = async () => {
-    try {
-      const response = await educationApi.getAll();
-      setEducationData(response.data);
-    } catch (error) {
-      console.error('Error fetching education:', error);
-    }
-  };
-
-  
   return (
     <section className="bg-primary text-white px-5 py-32" id="education">
       <div className="container mx-auto">

@@ -1,17 +1,6 @@
 import React from "react";
 import AboutImg from "../assets/about-img1.png";
-
-const About = ({ data = {} }) => {
-  // Destructure the data object with default values
-  const {
-    name = 'Your Name',
-    description = 'A brief description about yourself.',
-    paragraph1 = '',
-    paragraph2 = '',
-    paragraph3 = '',
-    imageUrl = AboutImg
-  } = data;
-
+const About = ({ aboutData }) => {
   return (
     <section className="bg-secondery text-white px-5 py-32" id="about">
       <div className="container mx-auto grid md:grid-cols-2 items-center justify-center md:justify-between">
@@ -21,22 +10,22 @@ const About = ({ data = {} }) => {
           </h2>
 
           <p className="pb-5">
-            Hi, My Name Is {name}.
+            Hi, My Name Is {aboutData.name}.
           </p>
           <p className="pb-5">
-            {description}
+            {aboutData.description}
           </p>
 
-          <p className="pb-5">{paragraph1}</p>
+          <p className="pb-5">{aboutData.paragraph1}</p>
 
-          <p className="pb-5">{paragraph2}</p>
+          <p className="pb-5">{aboutData.paragraph2}</p>
 
-          <p>{paragraph3}</p>
+          <p>{aboutData.paragraph3}</p>
         </div>
 
         <div className="about-img" >
           <img
-            src={imageUrl}
+            src={aboutData.imageUrl || AboutImg}
             alt="coding illustration"
             className="lgw-[80%] md:ml-auto"
             style={{ width: '400px', height: '400px'}}
