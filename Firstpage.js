@@ -82,9 +82,9 @@ const Firstpage = () => {
 
   const handleAboutChange = (e) => {
     const { name, value } = e.target;
-    setAboutInfo(prev => ({
+    setAboutInfo((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -110,7 +110,23 @@ const Firstpage = () => {
   };
 
   
-
+  const savePortfolioData = async (data) => {
+    try {
+      const response = await fetch('/api/portfolio', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to save portfolio data');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error saving portfolio data:', error);
+    }
+  };
   const [portfolioElement, setPortfolioElement] = useState(null);
 
   useEffect(() => {
@@ -133,9 +149,11 @@ const Firstpage = () => {
       certificates: certificateList,
       about: aboutInfo,
     };
-    <Footer/>
-    console.log('Final data being sent to renderPortfolio:', finalData);
-    renderPortfolio(finalData);
+    const savedData =  savePortfolioData(finalData);
+  if (savedData) {
+    renderPortfolio(savedData);
+  }
+    
   };
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -325,6 +343,46 @@ const Firstpage = () => {
   const handleDeleteCertificate = (index) => {
     setCertificateList(prev => prev.filter((_, i) => i !== index));
   };
+
+
+
+
+  //fetching  code
+  
+  useEffect(() => {
+    const fetchPortfolioData = async () => {
+      try {
+        const response = await fetch('/api/portfolio');
+        if (!response.ok) {
+          throw new Error('Failed to fetch portfolio data');
+        }
+        const data = await response.json();
+        // Set all the state variables with the fetched data
+        setFormData(data.hero);
+        setContactInfo(data.contact);
+        setSkillList(data.skills);
+        setExperienceList(data.experience);
+        setProjectList(data.projects);
+        setEducationList(data.education);
+        setAboutInfo(data.about);
+        setCertificateList(data.certificates);
+      } catch (error) {
+        console.error('Error fetching portfolio data:', error);
+      }
+    };
+  
+    fetchPortfolioData();
+  }, []);
+
+
+  
+  
+
+
+
+
+
+
 
   return (
     <form onSubmit={handleSubmit} id="firstpage" className="bg-gray-800 p-8 rounded-lg shadow-lg max-w-lg w-full">
