@@ -1,533 +1,747 @@
-import React, { useState } from 'react';
-import axiosInstance from '../axiosConfig';
-import { FaReact, FaNodeJs,  FaHtml5, FaCss3Alt, FaJsSquare } from 'react-icons/fa';
-import { SiTailwindcss, SiMongodb } from 'react-icons/si';
+import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
+import { certificatesApi, educationApi, experienceApi, projectsApi, skillsApi } from '../services/api';
+import Hero from '../components/Hero';
+import Skills from '../components/Skills';
+import Experience from '../components/Experience';
+import Projects from '../components/Projects';
+import Contact from '../components/Contact';
+import Education from '../components/Education';
+import About from '../components/About';
+import Certificates from '../components/Certificates';
+import { FaReact, FaNodeJs, FaHtml5, FaCss3Alt, FaJsSquare } from 'react-icons/fa';
+import { SiMongodb, SiTailwindcss } from 'react-icons/si';
+import { AiFillFileText } from 'react-icons/ai';
+import Footer from '../components/Footer';
 
 const Firstpage = () => {
   const [formData, setFormData] = useState({
     name: '',
-    email: '',
-    skills: [],
-    experience: [],
-    education: [],
-    certificates: [],
-    about: '',
-    hero: {
-      greeting: '',
-      name: '',
-      title: '',
-      description: '',
-      image: '', // URL or path to the hero image
-      socialLinks: {
-        twitter: '',
-        youtube: '',
-        facebook: ''
-      }
-    }
-  });
-
-  const [newExperience, setNewExperience] = useState({
-    jobTitle: '',
-    companyName: '',
-    startDate: '',
-    endDate: '',
-    description: '',
-  });
-
-  const [newCertificate, setNewCertificate] = useState({
     title: '',
-    organization: '',
-    issueDate: '',
     description: '',
+    image: '',
+    socialLinks: {
+      twitter: '',
+      linkedin: '',
+      facebook: '',
+    },
   });
 
+  const [contactInfo, setContactInfo] = useState({
+    email: '',
+    phone: '',
+    message: '',
+  });
+
+  const [experienceList, setExperienceList] = useState([]);
+  const [newExperience, setNewExperience] = useState({
+    role: '',
+    company: '',
+    period: '',
+    description: '',
+  });
+  const [editingExperience, setEditingExperience] = useState(null);
+
+  const [projectList, setProjectList] = useState([]);
+  const [newProject, setNewProject] = useState({
+    title: '',
+    description: '',
+    technologies: '',
+    github: '',
+  });
+  const [editingProject, setEditingProject] = useState(null);
+  
+  const [educationList, setEducationList] = useState([]);
   const [newEducation, setNewEducation] = useState({
     school: '',
     degree: '',
-    fieldOfStudy: '',
     startDate: '',
     endDate: '',
     description: '',
   });
+  const [editingEducation, setEditingEducation] = useState(null);
+  
+  const [aboutInfo, setAboutInfo] = useState({
+    name: '',
+    description: '',
+    paragraph1: '',
+    paragraph2: '',
+    paragraph3: '',
+    imageUrl: '',
+  });
 
-  const [selectedSkills, setSelectedSkills] = useState([]);
+  const [certificateList, setCertificateList] = useState([]);
+  const [newCertificate, setNewCertificate] = useState({
+    title: '',
+    issuer: '',
+    date: '',
+    link: '',
+  });
+  const [editingCertificate, setEditingCertificate] = useState(null);
 
-  const skillOptions = [
-    { name: 'React', icon: <FaReact className="text-blue-500" /> },
-    { name: 'Node.js', icon: <FaNodeJs className="text-green-500" /> },
-    { name: 'MongoDB', icon: <SiMongodb className="text-green-600" /> },
-    { name: 'HTML5', icon: <FaHtml5 className="text-orange-500" /> },
-    { name: 'CSS3', icon: <FaCss3Alt className="text-blue-600" /> },
-    { name: 'JavaScript', icon: <FaJsSquare className="text-yellow-500" /> },
-    { name: 'Tailwind CSS', icon: <SiTailwindcss className="text-teal-500" /> },
-  ];
+  const [portfolioElement, setPortfolioElement] = useState(null);
 
-  const handleChange = (e) => {
+  const [newSkill, setNewSkill] = useState({ name: '', level: 'Beginner' });
+  const [skillList, setSkillList] = useState([]);
+
+  useEffect(() => {
+    const element = document.createElement('div');
+    document.body.appendChild(element);
+    setPortfolioElement(element);
+    return () => {
+      document.body.removeChild(element);
+    };
+  }, []);
+
+  const handleAboutChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setAboutInfo(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
-  const handleSkillToggle = (skill) => {
-    setSelectedSkills((prev) =>
-      prev.some((s) => s.name === skill.name)
-        ? prev.filter((s) => s.name !== skill.name)
-        : [...prev, { name: skill.name, level: 'Beginner' }]
-    );
-  };
-
-  const handleSkillLevelChange = (skill, level) => {
-    setSelectedSkills((prev) =>
-      prev.map((s) => (s.name === skill.name ? { ...s, level } : s))
-    );
+  const renderPortfolio = (data) => {
+    console.log('Data received in renderPortfolio:', data);
+    if (portfolioElement) {
+      const root = ReactDOM.createRoot(portfolioElement); 
+      root.render(
+        <>
+          <Hero data={data} />
+          <About aboutData={data.about} />
+          <Skills skillsData={data.skills} />
+          <Experience experienceData={data.experience} />
+          <Projects projectsData={data.projects} />
+          <Education educationData={data.education} />
+          <Certificates certificatesData={data.certificates} />
+          <Contact contactData={data.contact} />
+        </>
+      );
+    } else {
+      console.error('portfolioElement is null');
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const finalData = { ...formData, skills: selectedSkills };
-    console.log(finalData);
-    // Here you can add logic to generate the portfolio from the finalData
-  };
-
-  const handleExperienceChange = (e) => {
-    const { name, value } = e.target;
-    setNewExperience({
-      ...newExperience,
-      [name]: value,
-    });
-  };
-
-  const addExperience = () => {
-    setFormData((prevData) => ({
-      ...prevData,
-      experience: [...prevData.experience, newExperience],
-    }));
-    setNewExperience({ jobTitle: '', companyName: '', startDate: '', endDate: '', description: '' });
-  };
-
-  const handleEducationChange = (e) => {
-    const { name, value } = e.target;
-    setNewEducation({
-      ...newEducation,
-      [name]: value,
-    });
-  };
-
-  const addEducation = () => {
-    setFormData((prevData) => ({
-      ...prevData,
-      education: [...prevData.education, newEducation],
-    }));
-    setNewEducation({ school: '', degree: '', fieldOfStudy: '', startDate: '', endDate: '', description: '' });
-  };
-
-  const handleCertificateChange = (e) => {
-    const { name, value } = e.target;
-    setNewCertificate({
-      ...newCertificate,
-      [name]: value,
-    });
-  };
-
-  const addCertificate = () => {
-    setFormData((prevData) => ({
-      ...prevData,
-      certificates: [...prevData.certificates, newCertificate],
-    }));
-    setNewCertificate({ title: '', organization: '', issueDate: '', description: '' });
-  };
-
-  const handleHeroChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
+    const finalData = {
       ...formData,
-      hero: {
-        ...formData.hero,
-        [name]: value
-      }
-    });
+      experience: experienceList,
+      projects: projectList,
+      skills: skillList,
+      contact: contactInfo,
+      education: educationList,
+      certificates: certificateList,
+      about: aboutInfo,
+    };
+    console.log('Final data being sent to renderPortfolio:', finalData);
+    renderPortfolio(finalData);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSocialLinkChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      hero: {
-        ...formData.hero,
-        socialLinks: {
-          ...formData.hero.socialLinks,
-          [name]: value
-        }
-      }
+    setFormData((prev) => ({
+      ...prev,
+      socialLinks: {
+        ...prev.socialLinks,
+        [name]: value,
+      },
+    }));
+  };
+
+  const handleContactChange = (e) => {
+    const { name, value } = e.target;
+    setContactInfo((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const skillOptions = [
+    { name: 'React', icon: <FaReact /> },
+    { name: 'Node.js', icon: <FaNodeJs /> },
+    { name: 'HTML5', icon: <FaHtml5 /> },
+    { name: 'CSS3', icon: <FaCss3Alt /> },
+    { name: 'JavaScript', icon: <FaJsSquare /> },
+    { name: 'MongoDB', icon: <SiMongodb /> },
+    { name: 'Tailwind CSS', icon: <SiTailwindcss /> },
+  ];
+
+  const handleSkillChange = (e) => {
+    const { name, value } = e.target;
+    setNewSkill((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const addSkill = () => {
+    const skillIcon = skillOptions.find((skill) => skill.name === newSkill.name)?.icon;
+    if (skillIcon) {
+      setSkillList((prev) => [...prev, { ...newSkill, icon: skillIcon }]);
+      setNewSkill({
+        name: '',
+        level: 'Beginner',
+      });
+    } else {
+      alert('Invalid skill name');
+    }
+  };
+
+  const handleExperienceChange = (e) => {
+    const { name, value } = e.target;
+    setNewExperience((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const addExperience = () => {
+    if (editingExperience !== null) {
+      setExperienceList(prev => prev.map((item, index) => 
+        index === editingExperience ? newExperience : item
+      ));
+      setEditingExperience(null);
+    } else {
+      setExperienceList((prev) => [...prev, newExperience]);
+    }
+    setNewExperience({
+      role: '',
+      company: '',
+      period: '',
+      description: '',
     });
   };
 
- 
+  const handleEditExperience = (index) => {
+    setEditingExperience(index);
+    setNewExperience(experienceList[index]);
+  };
+
+  const handleDeleteExperience = (index) => {
+    setExperienceList(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleProjectChange = (e) => {
+    const { name, value } = e.target;
+    setNewProject((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const addProject = () => {
+    setProjectList((prev) => [...prev, newProject]);
+    setNewProject({
+      title: '',
+      description: '',
+      technologies: '',
+      github: '',
+    });
+  };
+
+  const handleEditProject = (index) => {
+    setEditingProject(index);
+    setNewProject(experienceList[index]);
+  };
+
+  const handleDeleteProject = (index) => {
+    setProjectList(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleEducationChange = (e) => {
+    const { name, value } = e.target;
+    setNewEducation((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const addEducation = () => {
+    if (editingEducation !== null) {
+      setEducationList(prev => prev.map((item, index) => 
+        index === editingEducation ? newEducation : item
+      ));
+      setEditingEducation(null);
+    } else {
+      setEducationList((prev) => [...prev, newEducation]);
+    }
+    setNewEducation({
+      school: '',
+      degree: '',
+      startDate: '',
+      endDate: '',
+      description: '',
+    });
+  };
+
+  const handleEditEducation = (index) => {
+    setEditingEducation(index);
+    setNewEducation(educationList[index]);
+  };
+
+  const handleDeleteEducation = (index) => {
+    setEducationList(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleCertificateChange = (e) => {
+    const { name, value } = e.target;
+    setNewCertificate((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const addCertificate = () => {
+    if (editingCertificate !== null) {
+      setCertificateList(prev => prev.map((item, index) => 
+        index === editingCertificate ? { ...newCertificate, icon: <AiFillFileText className="text-gray-500" /> } : item
+      ));
+      setEditingCertificate(null);
+    } else {
+      setCertificateList((prev) => [...prev, { ...newCertificate, icon: <AiFillFileText className="text-gray-500" /> }]);
+    }
+    setNewCertificate({
+      title: '',
+      issuer: '',
+      date: '',
+      link: '',
+    });
+  };
+
+  const handleEditCertificate = (index) => {
+    setEditingCertificate(index);
+    setNewCertificate(certificateList[index]);
+  };
+
+  const handleDeleteCertificate = (index) => {
+    setCertificateList(prev => prev.filter((_, i) => i !== index));
+  };
+
 
   return (
-    
-    <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center" id="firstpage">
-      <form onSubmit={handleSubmit} className="bg-gray-800 p-8 rounded-lg shadow-lg max-w-lg w-full">
-        <h2 className="text-3xl font-bold mb-8 text-center">Enter Your Information</h2>
-      
-        {/* General Info */}
-        <label className="block mb-4">
-          <span className="block text-sm font-medium">Name</span>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="mt-1 block w-full bg-gray-700 border-gray-600 rounded p-2"
-            required
-          />
-        </label>
-        <label className="block mb-4">
-          <span className="block text-sm font-medium">Phone</span>
-          <input
-            type="phone"
-            name="phone"
-            
-            onChange={handleChange}
-            className="mt-1 block w-full bg-gray-700 border-gray-600 rounded p-2"
-            
-          />
-        </label>
-        <label className="block mb-4">
-          <span className="block text-sm font-medium">Email</span>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="mt-1 block w-full bg-gray-700 border-gray-600 rounded p-2"
-            required
-          />
-        </label>
+    <form onSubmit={handleSubmit} id="firstpage" className="bg-[var(--box-background)] p-8 rounded-lg shadow-lg max-w-lg w-full">
+      {/* Hero Section */}
+      <br/><br/><br/>
+      <h3 className="text-2xl font-bold mb-4 text-[var(--text-color-heading)]">Hero Section</h3>
+      <input
+        type="text"
+        name="name"
+        value={formData.name}
+        onChange={handleChange}
+        placeholder="Name"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      <input
+        type="text"
+        name="title"
+        value={formData.title}
+        onChange={handleChange}
+        placeholder="Title"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      <textarea
+        name="description"
+        value={formData.description}
+        onChange={handleChange}
+        placeholder="Description"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      <input
+        type="text"
+        name="image"
+        value={formData.image}
+        onChange={handleChange}
+        placeholder="Image URL"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      <input
+        type="text"
+        name="twitter"
+        value={formData.socialLinks.twitter}
+        onChange={handleSocialLinkChange}
+        placeholder="Twitter URL"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      <input
+        type="text"
+        name="linkedin"
+        value={formData.socialLinks.linkedin}
+        onChange={handleSocialLinkChange}
+        placeholder="LinkedIn URL"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      <input
+        type="text"
+        name="facebook"
+        value={formData.socialLinks.facebook}
+        onChange={handleSocialLinkChange}
+        placeholder="Facebook URL"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
 
-        {/* Hero Section */}
-        <h3 className="text-2xl font-bold mb-4">Hero Section</h3>
+      {/* Contact Info */}
+      <h3 className="text-2xl font-bold mt-4 mb-4 text-[var(--text-color-heading)]">Contact Info</h3>
+      <input
+        type="email"
+        name="email"
+        value={contactInfo.email}
+        onChange={handleContactChange}
+        placeholder="Email"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      <input
+        type="tel"
+        name="phone"
+        value={contactInfo.phone}
+        onChange={handleContactChange}
+        placeholder="Phone"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      <textarea
+        name="message"
+        value={contactInfo.message}
+        onChange={handleContactChange}
+        placeholder="Message"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
 
-        <label className="block mb-4">
-          <span className="block text-sm font-medium">Greeting</span>
-          <input
-            type="text"
-            name="greeting"
-            value={formData.hero.greeting}
-            onChange={handleHeroChange}
-            className="mt-1 block w-full bg-gray-700 border-gray-600 rounded p-2"
-          />
-        </label>
+      {/* Skills Section */}
+      <h3 className="text-2xl font-bold mt-4 mb-4 text-[var(--text-color-heading)]">Skills</h3>
+      <select
+        name="name"
+        value={newSkill.name}
+        onChange={handleSkillChange}
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      >
+        <option value="">Select a skill</option>
+        {skillOptions.map((option) => (
+          <option key={option.name} value={option.name}>
+            {option.name}
+          </option>
+        ))}
+      </select>
+      <select
+        name="level"
+        value={newSkill.level}
+        onChange={handleSkillChange}
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      >
+        <option value="Beginner">Beginner</option>
+        <option value="Intermediate">Intermediate</option>
+        <option value="Advanced">Advanced</option>
+      </select>
+      <button
+        type="button"
+        onClick={addSkill}
+        className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
+      >
+        Add Skill
+      </button>
 
-        
-        <label className="block mb-4">
-          <span className="block text-sm font-medium">Title</span>
-          <input
-            type="text"
-            name="title"
-            value={formData.hero.title}
-            onChange={handleHeroChange}
-            className="mt-1 block w-full bg-gray-700 border-gray-600 rounded p-2"
-          />
-        </label>
-
-        <label className="block mb-4">
-          <span className="block text-sm font-medium">Description</span>
-          <input
-            type="text"
-            name="description"
-            value={formData.hero.description}
-            onChange={handleHeroChange}
-            className="mt-1 block w-full bg-gray-700 border-gray-600 rounded p-2"
-          />
-        </label>
-
-        <label className="block mb-4">
-          <span className="block text-sm font-medium">Hero Image URL</span>
-          <input
-            type="text"
-            name="image"
-            value={formData.hero.image}
-            onChange={handleHeroChange}
-            className="mt-1 block w-full bg-gray-700 border-gray-600 rounded p-2"
-          />
-        </label>
-
-        <h4 className="text-xl font-bold mb-4">Social Links</h4>
-        <label className="block mb-4">
-          <span className="block text-sm font-medium">Twitter URL</span>
-          <input
-            type="text"
-            name="twitter"
-            value={formData.hero.socialLinks.twitter}
-            onChange={handleSocialLinkChange}
-            className="mt-1 block w-full bg-gray-700             border-gray-600 rounded p-2"
-          />
-        </label>
-
-        <label className="block mb-4">
-          <span className="block text-sm font-medium">Linkedin URL</span>
-          <input
-            type="text"
-            name="youtube"
-            value={formData.hero.socialLinks.youtube}
-            onChange={handleSocialLinkChange}
-            className="mt-1 block w-full bg-gray-700 border-gray-600 rounded p-2"
-          />
-        </label>
-
-        <label className="block mb-4">
-          <span className="block text-sm font-medium">Facebook URL</span>
-          <input
-            type="text"
-            name="facebook"
-            value={formData.hero.socialLinks.facebook}
-            onChange={handleSocialLinkChange}
-            className="mt-1 block w-full bg-gray-700 border-gray-600 rounded p-2"
-          />
-        </label>
-
-{/* About Section */}
-<h3 className="text-2xl font-bold mb-4">About Me</h3>
-        <label className="block mb-4">
-          <span className="block text-sm font-medium">About Me</span>
-          <textarea
-            name="about"
-            value={formData.about}
-            onChange={handleChange}
-            className="mt-1 block w-full bg-gray-700 border-gray-600 rounded p-2"
-          />
-        </label>
-
-        <h3 className="text-2xl font-bold mb-4">Select Your Skills</h3>
-        <div className="grid grid-cols-2 gap-4 mb-4">
-          {skillOptions.map((skill, index) => (
-            <div key={index}>
-              <label className="flex items-center space-x-3">
-                <input
-                  type="checkbox"
-                  value={skill.name}
-                  checked={selectedSkills.some((s) => s.name === skill.name)}
-                  onChange={() => handleSkillToggle(skill)}
-                  className="form-checkbox"
-                />
-                <span>{skill.icon} {skill.name}</span>
-              </label>
-              {selectedSkills.some((s) => s.name === skill.name) && (
-                <select
-                  value={
-                    selectedSkills.find((s) => s.name === skill.name)?.level ||
-                    'Beginner'
-                  }
-                  onChange={(e) => handleSkillLevelChange(skill, e.target.value)}
-                  className="mt-2 block w-full bg-gray-700 border-gray-600 rounded p-2"
-                >
-                  <option value="Beginner">Beginner</option>
-                  <option value="Intermediate">Intermediate</option>
-                  <option value="Advanced">Advanced</option>
-                </select>
-              )}
-            </div>
-          ))}
+      {/* Experience Section */}
+      <h3 className="text-2xl font-bold mt-4 mb-4 text-[var(--text-color-heading)]">Experience</h3>
+      <input
+        type="text"
+        name="role"
+        value={newExperience.role}
+        onChange={handleExperienceChange}
+        placeholder="Role"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      <input
+        type="text"
+        name="company"
+        value={newExperience.company}
+        onChange={handleExperienceChange}
+        placeholder="Company"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      <input
+        type="text"
+        name="period"
+        value={newExperience.period}
+        onChange={handleExperienceChange}
+        placeholder="Period (e.g., 2022-present)"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      <textarea
+        name="description"
+        value={newExperience.description}
+        onChange={handleExperienceChange}
+        placeholder="Description"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      {experienceList.map((exp, index) => (
+        <div key={index} className="mt-2 p-2 bg-[var(--box-background)] rounded">
+          <p className="text-[var(--text-color-heading)]">{exp.role} at {exp.company}</p>
+          <button 
+            onClick={() => handleEditExperience(index)}
+            className="mt-1 bg-yellow-500 text-white px-2 py-1 rounded mr-2"
+          >
+            Edit
+          </button>
+          <button 
+            onClick={() => handleDeleteExperience(index)}
+            className="mt-1 bg-red-500 text-white px-2 py-1 rounded"
+          >
+            Delete
+          </button>
         </div>
+      ))}
+      <button
+        type="button"
+        onClick={addExperience}
+        className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
+      >
+        {editingExperience !== null ? 'Update Experience' : 'Add Experience'}
+      </button>
 
+      {/* Projects Section */}
+      <h3 className="text-2xl font-bold mt-4 mb-4 text-[var(--text-color-heading)]">Projects</h3>
+      <input
+        type="text"
+        name="title"
+        value={newProject.title}
+        onChange={handleProjectChange}
+        placeholder="Project Title"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      <textarea
+        name="description"
+        value={newProject.description}
+        onChange={handleProjectChange}
+        placeholder="Project Description"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      <input
+        type="text"
+        name="technologies"
+        value={newProject.technologies}
+        onChange={handleProjectChange}
+        placeholder="Technologies Used"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+            <input
+        type="text"
+        name="github"
+        value={newProject.github}
+        onChange={handleProjectChange}
+        placeholder="GitHub Link"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      {projectList.map((proj, index) => (
+        <div key={index} className="mt-2 p-2 bg-[var(--box-background)] rounded">
+          <p className="text-[var(--text-color-heading)]">{proj.title}</p>
+          <button 
+            onClick={() => handleEditProject(index)}
+            className="mt-1 bg-yellow-500 text-white px-2 py-1 rounded mr-2"
+          >
+            Edit
+          </button>
+          <button 
+            onClick={() => handleDeleteProject(index)}
+            className="mt-1 bg-red-500 text-white px-2 py-1 rounded"
+          >
+            Delete
+          </button>
+        </div>
+      ))}
+      <button
+        type="button"
+        onClick={addProject}
+        className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
+      >
+        Add Project
+      </button>
 
-        {/* Experience Section */}
-        <h3 className="text-2xl font-bold mb-4">Experience</h3>
-        <label className="block mb-4">
-          <span className="block text-sm font-medium">Job Title</span>
-          <input
-            type="text"
-            name="jobTitle"
-            value={newExperience.jobTitle}
-            onChange={handleExperienceChange}
-            className="mt-1 block w-full bg-gray-700 border-gray-600 rounded p-2"
-          />
-        </label>
+      {/* Education Section */}
+      <h3 className="text-2xl font-bold mt-4 mb-4 text-[var(--text-color-heading)]">Education</h3>
+      <input
+        type="text"
+        name="school"
+        value={newEducation.school}
+        onChange={handleEducationChange}
+        placeholder="School"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      <input
+        type="text"
+        name="degree"
+        value={newEducation.degree}
+        onChange={handleEducationChange}
+        placeholder="Degree"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      <input
+        type="date"
+        name="startDate"
+        value={newEducation.startDate}
+        onChange={handleEducationChange}
+        placeholder="Start Date"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      <input
+        type="date"
+        name="endDate"
+        value={newEducation.endDate}
+        onChange={handleEducationChange}
+        placeholder="End Date"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      <textarea
+        name="description"
+        value={newEducation.description}
+        onChange={handleEducationChange}
+        placeholder="Description"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      {educationList.map((edu, index) => (
+        <div key={index} className="mt-2 p-2 bg-[var(--box-background)] rounded">
+          <p className="text-[var(--text-color-heading)]">{edu.degree} at {edu.school}</p>
+          <button 
+            onClick={() => handleEditEducation(index)}
+            className="mt-1 bg-yellow-500 text-white px-2 py-1 rounded mr-2"
+          >
+            Edit
+          </button>
+          <button 
+            onClick={() => handleDeleteEducation(index)}
+            className="mt-1 bg-red-500 text-white px-2 py-1 rounded"
+          >
+            Delete
+          </button>
+        </div>
+      ))}
+      <button
+        type="button"
+        onClick={addEducation}
+        className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
+      >
+        {editingEducation !== null ? 'Update Education' : 'Add Education'}
+      </button>
 
-        <label className="block mb-4">
-          <span className="block text-sm font-medium">Company Name</span>
-          <input
-            type="text"
-            name="companyName"
-            value={newExperience.companyName}
-            onChange={handleExperienceChange}
-            className="mt-1 block w-full bg-gray-700 border-gray-600 rounded p-2"
-          />
-        </label>
+      {/* About Me Section */}
+      <h3 className="text-2xl font-bold mt-4 mb-4 text-[var(--text-color-heading)]">About Me</h3>
+      <input
+        type="text"
+        name="name"
+        value={aboutInfo.name}
+        onChange={handleAboutChange}
+        placeholder="Name"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      <textarea
+        name="description"
+        value={aboutInfo.description}
+        onChange={handleAboutChange}
+        placeholder="Short Description"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      <textarea
+        name="paragraph1"
+        value={aboutInfo.paragraph1}
+        onChange={handleAboutChange}
+        placeholder="Paragraph 1"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      <textarea
+        name="paragraph2"
+        value={aboutInfo.paragraph2}
+        onChange={handleAboutChange}
+        placeholder="Paragraph 2"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      <textarea
+        name="paragraph3"
+        value={aboutInfo.paragraph3}
+        onChange={handleAboutChange}
+        placeholder="Paragraph 3"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      <input
+        type="text"
+        name="imageUrl"
+        value={aboutInfo.imageUrl}
+        onChange={handleAboutChange}
+        placeholder="Image URL"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
 
-        <label className="block mb-4">
-          <span className="block text-sm font-medium">Start Date</span>
-          <input
-            type="date"
-            name="startDate"
-            value={newExperience.startDate}
-            onChange={handleExperienceChange}
-            className="mt-1 block w-full bg-gray-700 border-gray-600 rounded p-2"
-          />
-        </label>
+      {/* Certificates Section */}
+      <h3 className="text-2xl font-bold mt-4 mb-4 text-[var(--text-color-heading)]">Certificates</h3>
+      <input
+        type="text"
+        name="title"
+        value={newCertificate.title}
+        onChange={handleCertificateChange}
+        placeholder="Certificate Title"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      <input
+        type="text"
+        name="issuer"
+        value={newCertificate.issuer}
+        onChange={handleCertificateChange}
+        placeholder="Issuer"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      <input
+        type="date"
+        name="date"
+        value={newCertificate.date}
+        onChange={handleCertificateChange}
+        placeholder="Date"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      <input
+        type="text"
+        name="link"
+        value={newCertificate.link}
+        onChange={handleCertificateChange}
+        placeholder="Certificate Link"
+        className="mt-1 block w-full bg-[var(--box-background)] border-[var(--text-color-heading)] rounded p-2"
+      />
+      {certificateList.map((cert, index) => (
+        <div key={index} className="mt-2 p-2 bg-[var(--box-background)] rounded">
+          <p className="text-[var(--text-color-heading)]">{cert.title} from {cert.issuer}</p>
+          <button 
+            onClick={() => handleEditCertificate(index)}
+            className="mt-1 bg-yellow-500 text-white px-2 py-1 rounded mr-2"
+          >
+            Edit
+          </button>
+          <button 
+            onClick={() => handleDeleteCertificate(index)}
+            className="mt-1 bg-red-500 text-white px-2 py-1 rounded"
+          >
+            Delete
+          </button>
+        </div>
+      ))}
+      <button
+        type="button"
+        onClick={addCertificate}
+        className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
+      >
+        {editingCertificate !== null ? 'Update Certificate' : 'Add Certificate'}
+      </button>
 
-        <label className="block mb-4">
-          <span className="block text-sm font-medium">End Date</span>
-          <input
-            type="date"
-            name="endDate"
-            value={newExperience.endDate}
-            onChange={handleExperienceChange}
-            className="mt-1 block w-full bg-gray-700 border-gray-600 rounded p-2"
-          />
-        </label>
-
-        <label className="block mb-4">
-          <span className="block text-sm font-medium">Description</span>
-          <textarea
-            name="description"
-            value={newExperience.description}
-            onChange={handleExperienceChange}
-            className="mt-1 block w-full bg-gray-700 border-gray-600 rounded p-2"
-          />
-        </label>
-
-        <button
-          type="button"
-          onClick={addExperience}
-          className="bg-accent text-white px-4 py-2 rounded mt-4"
-        >
-          Add Experience
-        </button>
-
-        {/* Education Section */}
-        <h3 className="text-2xl font-bold mb-4">Education</h3>
-        <label className="block mb-4">
-          <span className="block text-sm font-medium">School</span>
-          <input
-            type="text"
-            name="school"
-            value={newEducation.school}
-            onChange={handleEducationChange}
-            className="mt-1 block w-full bg-gray-700 border-gray-600 rounded p-2"
-          />
-        </label>
-
-        <label className="block mb-4">
-          <span className="block text-sm font-medium">Degree</span>
-          <input
-            type="text"
-            name="degree"
-            value={newEducation.degree}
-            onChange={handleEducationChange}
-            className="mt-1 block w-full bg-gray-700 border-gray-600 rounded p-2"
-          />
-        </label>
-
-       
-
-        <label className="block mb-4">
-          <span className="block text-sm font-medium">Start Date</span>
-          <input
-            type="date"
-            name="startDate"
-            value={newEducation.startDate}
-            onChange={handleEducationChange}
-            className="mt-1 block w-full bg-gray-700 border-gray-600 rounded p-2"
-          />
-        </label>
-
-        <label className="block mb-4">
-          <span className="block text-sm font-medium">End Date</span>
-          <input
-            type="date"
-            name="endDate"
-            value={newEducation.endDate}
-            onChange={handleEducationChange}
-            className="mt-1 block w-full bg-gray-700 border-gray-600 rounded p-2"
-          />
-        </label>
-
-        <label className="block mb-4">
-          <span className="block text-sm font-medium">Description</span>
-          <textarea
-            name="description"
-            value={newEducation.description}
-            onChange={handleEducationChange}
-            className="mt-1 block w-full bg-gray-700 border-gray-600 rounded p-2"
-          />
-        </label>
-
-        <button
-          type="button"
-          onClick={addEducation}
-          className="bg-accent text-white px-4 py-2 rounded mt-4"
-        >
-          Add Education
-        </button>
-
-        {/* Certificates Section */}
-        <h3 className="text-2xl font-bold mb-4">Certificates</h3>
-        <label className="block mb-4">
-          <span className="block text-sm font-medium">Title</span>
-          <input
-            type="text"
-            name="title"
-            value={newCertificate.title}
-            onChange={handleCertificateChange}
-            className="mt-1 block w-full bg-gray-700 border-gray-600 rounded p-2"
-          />
-        </label>
-
-        <label className="block mb-4">
-          <span className="block text-sm font-medium">Organization</span>
-          <input
-            type="text"
-            name="organization"
-            value={newCertificate.organization}
-            onChange={handleCertificateChange}
-            className="mt-1 block w-full bg-gray-700 border-gray-600 rounded p-2"
-          />
-        </label>
-
-        <label className="block mb-4">
-          <span className="block text-sm font-medium">Issue Date</span>
-          <input
-            type="date"
-            name="issueDate"
-            value={newCertificate.issueDate}
-            onChange={handleCertificateChange}
-            className="mt-1 block w-full bg-gray-700 border-gray-600 rounded p-2"
-          />
-        </label>
-
-        <label className="block mb-4">
-          <span className="block text-sm font-medium">Description</span>
-          <textarea
-            name="description"
-            value={newCertificate.description}
-            onChange={handleCertificateChange}
-            className="mt-1 block w-full bg-gray-700 border-gray-600 rounded p-2"
-          />
-        </label>
-
-        <button
-          type="button"
-          onClick={addCertificate}
-          className="bg-accent text-white px-4 py-2 rounded mt-4"
-        >
-          Add Certificate
-        </button><br></br>
-
-        
-
-        <button
-          type="submit"
-          className="bg-accent text-white px-6 py-3 rounded mt-4"
-        >
-          Generate Portfolio
-        </button>
-      </form>
-    </div>
- 
+      <button
+        type="submit"
+        className="mt-4 bg-green-500 text-white px-4 py-2 rounded"
+      >
+        Generate Portfolio
+      </button>
+    </form>
   );
 };
 

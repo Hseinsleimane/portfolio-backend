@@ -1,8 +1,13 @@
-import React, { useEffect } from 'react';
+
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../axiosConfig';
-import './style.css'; // Make sure this path is correct
+import './style.css';
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [signInData, setSignInData] = useState({ name: '', password: '' });
+
   useEffect(() => {
     const inputs = document.querySelectorAll(".input-field");
     const toggle_btn = document.querySelectorAll(".toggle");
@@ -45,41 +50,61 @@ const Login = () => {
     });
   }, []);
 
+  const handleSignInChange = (e) => {
+    setSignInData({ ...signInData, [e.target.name]: e.target.value });
+  };
+  const handleSignInSubmit = (e) => {
+    e.preventDefault();
+    if (signInData.name === 'wiam' && signInData.password === 'wiam') {
+      // Navigate to the first page
+      navigate('/Firstpage');  // Adjust this path if your home page has a different route
+    } else {
+      // Handle invalid login
+      alert('Invalid username or password');
+    }
+  };
+
   return (
     <main>
       <section className="bg-gray-900 text-white py-20" id="login"></section>
       <div className="box">
         <div className="inner-box">
           <div className="forms-wrap">
-            <form action="index.html" autoComplete="off" className="sign-in-form">
+            <form onSubmit={handleSignInSubmit} className="sign-in-form">
               <div className="logo"></div>
               <div className="heading">
                 <h2>Welcome Back</h2>
                 <h6>Not registered yet?</h6>
-                <a href="#" className="toggle">Sign up</a>
+                <a href="#" className="toggle"> Sign up</a>
               </div>
               <div className="actual-form">
                 <div className="input-wrap">
                   <input
                     type="text"
+                    name="name"
                     minLength="4"
                     className="input-field"
                     autoComplete="off"
                     required
+                    value={signInData.name}
+                    onChange={handleSignInChange}
                   />
                   <label>Name</label>
                 </div>
                 <div className="input-wrap">
                   <input
                     type="password"
+                    name="password"
                     minLength="4"
                     className="input-field"
                     autoComplete="off"
                     required
+                    value={signInData.password}
+                    onChange={handleSignInChange}
                   />
                   <label>Password</label>
                 </div>
-                <input type="submit" value="Sign In" className="sign-btn" />
+                <input type="submit" onClick={handleSignInSubmit} value="Sign In" className="sign-btn" />
               </div>
             </form>
             <form action="index.html" autoComplete="off" className="sign-up-form">
@@ -87,7 +112,7 @@ const Login = () => {
               <div className="heading">
                 <h2>Get Started</h2>
                 <h6>Already have an account?</h6>
-                <a href="#" className="toggle">Sign in</a>
+                <a href="#" className="toggle"> Sign in</a>
               </div>
               <div className="actual-form">
                 <div className="input-wrap">

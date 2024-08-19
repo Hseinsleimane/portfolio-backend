@@ -1,35 +1,32 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* app.css */
 
-/* color */
 .bg-primary {
-  background: #1e2e53;
+  background: var(--background-color);
 }
 
-.bg-secondery {
-  background: hsl(217, 61%, 48%);
+.bg-secondary {
+  background: var(--box-background);
 }
 
 .bg-accent {
-  background: #7477FF;
+  background: var(--carousel-background);
 }
 
 .text-accent {
-  color: #7477FF;
-} 
+  color: var(--text-color-heading);
+}
 
 nav li a {
   @apply px-4 py-5 text-lg;
 }
 
 nav li a:hover {
-  color: #7477FF;
+  color: var(--link-hover-color);
 }
 
 .mobile-nav {
   @apply block md:hidden fixed top-10 py-2 w-full h-full bg-gray-900 duration-500;
-} 
+}
 
 /* hero */
 h1 {

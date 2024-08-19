@@ -1,4 +1,40 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+
+/* style.css */
+:root {
+  --box-background-light: #ffffff;
+  --box-background-dark: #1a202c;
+  --text-color-heading-light: #1a202c;
+  --text-color-heading-dark: #ffffff;
+  --main-background-light: #e0f7fa; /* Light blue background */
+  --main-background-dark: #0d1b2a; /* Dark navy background */
+  --button-background-light: #0288d1; /* Light blue button */
+  --button-background-dark: #1a202c; /* Dark navy button */
+  --button-text-color-light: #ffffff; /* White text on light button */
+  --button-text-color-dark: #ffffff; /* White text on dark button */
+  --box-background: var(--box-background-light);
+  --text-color-heading: var(--text-color-heading-light);
+  --main-background: var(--main-background-light);
+  --button-background: var(--button-background-light);
+  --button-text-color: var(--button-text-color-light);
+}
+
+[data-theme="dark"] {
+  --box-background: var(--box-background-dark);
+  --text-color-heading: var(--text-color-heading-dark);
+  --main-background: var(--main-background-dark);
+  --button-background: var(--button-background-dark);
+  --button-text-color: var(--button-text-color-dark);
+}
+
+[data-theme="light"] {
+  --box-background: var(--box-background-light);
+  --text-color-heading: var(--text-color-heading-light);
+  --main-background: var(--main-background-light);
+  --button-background: var(--button-background-light);
+  --button-text-color: var(--button-text-color-light);
+}
 
 *,
 *::before,
@@ -13,11 +49,16 @@ input {
   font-family: "Poppins", sans-serif;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Roboto", sans-serif;
+}
+
 main {
+  position:relative;
   width: 100%;
   min-height: 100vh;
   overflow: hidden;
-  background-color: #1e2e53;
+  background-color: var(--main-background);
   padding: 2rem;
   display: flex;
   align-items: center;
@@ -29,7 +70,7 @@ main {
   width: 100%;
   max-width: 1020px;
   height: 640px;
-  background-color: #fff;
+  background-color: var(--box-background);
   border-radius: 3.3rem;
   box-shadow: 0 60px 40px -30px rgba(0, 0, 0, 0.27);
 }
@@ -87,13 +128,13 @@ form.sign-up-form {
   font-size: 1.1rem;
   margin-top: -9px;
   letter-spacing: -0.5px;
-  color: #151111;
+  color: var(--text-color-heading);
 }
 
 .heading h2 {
   font-size: 2.1rem;
   font-weight: 600;
-  color: #151111;
+  color: var(--text-color-heading);
 }
 
 .heading h6 {
@@ -104,7 +145,7 @@ form.sign-up-form {
 }
 
 .toggle {
-  color: #151111;
+  color: var(--text-color-heading);
   text-decoration: none;
   font-size: 0.75rem;
   font-weight: 500;
@@ -131,7 +172,7 @@ form.sign-up-form {
   border-bottom: 1px solid #bbb;
   padding: 0;
   font-size: 0.95rem;
-  color: #151111;
+  color: var(--text-color-heading);
   transition: 0.4s;
 }
 
@@ -147,7 +188,7 @@ label {
 }
 
 .input-field.active {
-  border-bottom-color: #151111;
+  border-bottom-color: var(--text-color-heading);
 }
 
 .input-field.active + label {
@@ -159,8 +200,8 @@ label {
   display: inline-block;
   width: 100%;
   height: 43px;
-  background-color: #151111;
-  color: #fff;
+  background-color: var(--button-background);
+  color: var(--button-text-color);
   border: none;
   cursor: pointer;
   border-radius: 0.8rem;
@@ -297,7 +338,7 @@ main.sign-up-mode .carousel {
 
 .bullets span.active {
   width: 1.1rem;
-  background-color: #151111;
+  background-color: var(--text-color-heading);
   border-radius: 1rem;
 }
 
@@ -390,4 +431,130 @@ main.sign-up-mode .carousel {
   form {
     padding: 1rem 2rem 1.5rem;
   }
+}
+
+/* Add this to your style.css */
+.section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.img-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.neon-effect::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 255, 0.2); 
+  filter: blur(15px); 
+  z-index: -1;
+  border-radius: 50%;
+}
+
+.glitch {
+  position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch::before {
+  left: 2px;
+  text-shadow: -2px 0 #a8224c;
+  clip: rect(24px, 550px, 90px, 0);
+  animation: glitch-anim-1 2s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+  left: -2px;
+  text-shadow: -2px 0 #00fff9, 2px 2px #a8224c;
+  animation: glitch-anim-2 1s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim-1 {
+  0% {
+    clip: rect(24px, 550px, 90px, 0);
+  }
+  20% {
+    clip: rect(62px, 550px, 130px, 0);
+  }
+  40% {
+    clip: rect(58px, 550px, 14px, 0);
+  }
+  60% {
+    clip: rect(56px, 550px, 53px, 0);
+  }
+  80% {
+    clip: rect(120px, 550px, 61px, 0);
+  }
+  100% {
+    clip: rect(62px, 550px, 26px, 0);
+  }
+}
+
+@keyframes glitch-anim-2 {
+  0% {
+    clip: rect(41px, 550px, 80px, 0);
+  }
+  20% {
+    clip: rect(18px, 550px, 13px, 0);
+  }
+  40% {
+    clip: rect(3px, 550px, 27px, 0);
+  }
+  60% {
+    clip: rect(100px, 550px, 98px, 0);
+  }
+  80% {
+    clip: rect(95px, 550px, 59px, 0);
+  }
+  100% {
+    clip: rect(79px, 550px, 23px, 0);
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 10s linear infinite;
 }
