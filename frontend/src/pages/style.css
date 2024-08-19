@@ -7,17 +7,23 @@
   --box-background-dark: #1a202c;
   --text-color-heading-light: #1a202c;
   --text-color-heading-dark: #ffffff;
-  --main-background-light: #e0f7fa; /* Light blue background */
+  --main-background-light: #ffffff; 
   --main-background-dark: #0d1b2a; /* Dark navy background */
   --button-background-light: #0288d1; /* Light blue button */
   --button-background-dark: #1a202c; /* Dark navy button */
   --button-text-color-light: #ffffff; /* White text on light button */
   --button-text-color-dark: #ffffff; /* White text on dark button */
+  --section-background-light: #ccd6f7; /* Light blue background */
+  --section-background-dark: #000000;
+  --neon-color-light: rgb(0, 0, 0); /* Black neon for light mode */
+  --neon-color-dark: rgb(255, 255, 255);
   --box-background: var(--box-background-light);
   --text-color-heading: var(--text-color-heading-light);
   --main-background: var(--main-background-light);
   --button-background: var(--button-background-light);
   --button-text-color: var(--button-text-color-light);
+  --section-background: var(--section-background-light);
+  --neon-color: var(--neon-color-light);
 }
 
 [data-theme="dark"] {
@@ -26,6 +32,8 @@
   --main-background: var(--main-background-dark);
   --button-background: var(--button-background-dark);
   --button-text-color: var(--button-text-color-dark);
+  --section-background: var(--section-background-dark);
+  --neon-color: var(--neon-color-dark);
 }
 
 [data-theme="light"] {
@@ -34,6 +42,8 @@
   --main-background: var(--main-background-light);
   --button-background: var(--button-background-light);
   --button-text-color: var(--button-text-color-light);
+  --section-background: var(--section-background-light);
+  --neon-color: var(--neon-color-light);
 }
 
 *,
@@ -63,6 +73,30 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+#about, #experience, #education, #contact {
+  background-color: var(--section-background);
+}
+
+.hero-img .neon-effect::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 102%; 
+  height: 102%; 
+  transform: translate(-50%, -50%);
+  background: var(--neon-color); 
+  filter: none;
+  z-index: -1;
+  border-radius: 50%;
+}
+
+.hero-img img {
+  border-radius: 50%; /* Make the image round */
+  width: 400px; /* Ensure the width and height are equal */
+  height: 400px; /* Ensure the width and height are equal */
 }
 
 .box {
